@@ -71,6 +71,54 @@ export default function PaymentView({
     console.log(jsonObjectTwo.id);
   }
 
+  let ccNumberInput = document.querySelector('.cc-number-input'),
+		ccNumberPattern = /^\d{0,16}$/g,
+		ccNumberSeparator = " ",
+		ccNumberInputOldValue,
+		ccNumberInputOldCursor,
+		
+		mask = (value, limit, separator) => {
+			var output = [];
+			for (let i = 0; i < value.length; i++) {
+				if ( i !== 0 && i % limit === 0) {
+					output.push(separator);
+				}
+				
+				output.push(value[i]);
+			}
+			
+			return output.join("");
+		},
+		unmask = (value) => value.replace(/[^\d]/g, ''),
+		checkSeparator = (position, interval) => Math.floor(position / (interval + 1)),
+		ccNumberInputKeyDownHandler = (e) => {
+			let el = e.target;
+			ccNumberInputOldValue = el.value;
+			ccNumberInputOldCursor = el.selectionEnd;
+		},
+		ccNumberInputInputHandler = (e) => {
+			let el = e.target,
+					newValue = unmask(el.value),
+					newCursorPosition;
+			
+			if ( newValue.match(ccNumberPattern) ) {
+				newValue = mask(newValue, 4, ccNumberSeparator);
+				
+				newCursorPosition = 
+					ccNumberInputOldCursor - checkSeparator(ccNumberInputOldCursor, 4) + 
+					checkSeparator(ccNumberInputOldCursor + (newValue.length - ccNumberInputOldValue.length), 4) + 
+					(unmask(newValue).length - unmask(ccNumberInputOldValue).length);
+				
+				el.value = (newValue !== "") ? newValue : "";
+			} else {
+				el.value = ccNumberInputOldValue;
+				newCursorPosition = ccNumberInputOldCursor;
+			}
+			
+			el.setSelectionRange(newCursorPosition, newCursorPosition);
+
+		};
+
   return (
     <section className="placeContent">
       <Link to="/basket">
@@ -118,6 +166,7 @@ export default function PaymentView({
                 type="text"
                 name="cardNumber"
                 id="cardNumber"
+                className="cc-number-input"
                 autoComplete="xyz"
                 placeholder="XXXX XXXX XXXX XXXX"
                 minLength="16"
@@ -125,6 +174,8 @@ export default function PaymentView({
                 min="0000 0000 0000 0000"
                 max="9999 9999 9999 9999"
                 pattern="[0-9 ]{16,19}"
+                onKeyDown={ccNumberInputKeyDownHandler}
+                onInput={ccNumberInputInputHandler}
                 required
               />
               <span className="error" id="err-name" aria-live="assertive">
@@ -165,6 +216,7 @@ export default function PaymentView({
                   id="expirationDate"
                   autoComplete="xyz"
                   placeholder="Month"
+                  maxLength="2"
                   pattern="(?:0[0-9]|1[0-2])"
                   required
                 />
@@ -177,6 +229,7 @@ export default function PaymentView({
                   id="expirationDate"
                   autoComplete="xyz"
                   placeholder="Year"
+                  maxLength="2"
                   pattern="(?:2[0-9]|0[0-9])"
                   required
                 />
