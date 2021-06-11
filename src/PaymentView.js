@@ -113,7 +113,7 @@ export default function PaymentView({
 
           <form onSubmit={submitHandler}>
             <label htmlFor="cardNumber">
-              Card number
+              <b>Card number</b>
               <input
                 type="text"
                 name="cardNumber"
@@ -133,7 +133,8 @@ export default function PaymentView({
             </label>
 
             <label htmlFor="nameOnCard">
-              Name on card
+              <b>Name on card</b>
+              <p className="inputText">Type in the full name on the card</p>
               <input
                 type="text"
                 name="nameOnCard"
@@ -149,7 +150,8 @@ export default function PaymentView({
             </label>
 
             <label htmlFor="expirationDate">
-                Expiration date
+              <b>Expiration date</b>
+              <p className="inputText">The month / The year</p>
               <div style={{
                 display: "flex",
                 flexWrap: "wrap",
@@ -195,7 +197,8 @@ export default function PaymentView({
             </label>
 
             <label htmlFor="cvv">
-              CVV
+              <b>CVV</b>
+              <p className="inputText">The three numbers on the back of the card</p>
               <input
                 type="number"
                 name="cvv"
