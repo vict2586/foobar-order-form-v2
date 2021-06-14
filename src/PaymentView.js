@@ -237,7 +237,7 @@ export default function PaymentView({
                 <input
                   type="text"
                   name="expirationDateM"
-                  id="expirationDate"
+                  id="expirationDateM"
                   autoComplete="xyz"
                   placeholder="Month"
                   maxLength="2"
@@ -251,7 +251,7 @@ export default function PaymentView({
                 <input
                   type="text"
                   name="expirationDateY"
-                  id="expirationDate"
+                  id="expirationDateY"
                   className="expirationDateY"
                   autoComplete="xyz"
                   placeholder="Year"
