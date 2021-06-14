@@ -1,6 +1,7 @@
 import BackButton from "./BackButton";
 import { useHistory, Link } from "react-router-dom";
 import BeerForPaymentView from "./BeerForPaymentView";
+import React from "react";
 
 export default function PaymentView({
   tablenumber,
@@ -79,7 +80,7 @@ export default function PaymentView({
 
   mask = function(value) {
     let output = [];
-    
+
       for(let i = 0; i < value.length; i++) {
         if(i !== 0 && i % 4 === 0) {
           output.push(" "); // add the separator
@@ -113,7 +114,9 @@ export default function PaymentView({
       if(newValue.match(regex)) {
         newValue = mask(newValue);
         
-        newCursorPosition = oldCursor - checkSeparator(oldCursor, 4) + checkSeparator(oldCursor + (newValue.length - oldValue.length), 4) + (unmask(newValue).length - unmask(oldValue).length);
+        newCursorPosition = oldCursor - checkSeparator(oldCursor, 4) + 
+          checkSeparator(oldCursor + (newValue.length - oldValue.length), 4) + 
+            (unmask(newValue).length - unmask(oldValue).length);
                 
         if(newValue !== "") {
           el.value = newValue;
@@ -130,6 +133,15 @@ export default function PaymentView({
     el.setSelectionRange(newCursorPosition, newCursorPosition);
   };
 
+  // Expire date jumbing
+
+  const movetoNext = function(e) {
+    let el = e.target;
+
+    if (el.getAttribute && el.value.length === el.maxLength) {
+        document.querySelector(".expirationDateY").focus();
+    }
+  }
 
   return (
     <section className="placeContent">
@@ -229,6 +241,7 @@ export default function PaymentView({
                   autoComplete="xyz"
                   placeholder="Month"
                   maxLength="2"
+                  onChange={movetoNext} 
                   pattern="(?:0[0-9]|1[0-2])"
                   required
                 />
@@ -239,6 +252,7 @@ export default function PaymentView({
                   type="text"
                   name="expirationDateY"
                   id="expirationDate"
+                  className="expirationDateY"
                   autoComplete="xyz"
                   placeholder="Year"
                   maxLength="2"
