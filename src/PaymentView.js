@@ -71,53 +71,65 @@ export default function PaymentView({
     console.log(jsonObjectTwo.id);
   }
 
-  let ccNumberInput = document.querySelector('.cc-number-input'),
-		ccNumberPattern = /^\d{0,16}$/g,
-		ccNumberSeparator = " ",
-		ccNumberInputOldValue,
-		ccNumberInputOldCursor,
-		
-		mask = (value, limit, separator) => {
-			var output = [];
-			for (let i = 0; i < value.length; i++) {
-				if ( i !== 0 && i % limit === 0) {
-					output.push(separator);
-				}
-				
-				output.push(value[i]);
-			}
-			
-			return output.join("");
-		},
-		unmask = (value) => value.replace(/[^\d]/g, ''),
-		checkSeparator = (position, interval) => Math.floor(position / (interval + 1)),
-		ccNumberInputKeyDownHandler = (e) => {
-			let el = e.target;
-			ccNumberInputOldValue = el.value;
-			ccNumberInputOldCursor = el.selectionEnd;
-		},
-		ccNumberInputInputHandler = (e) => {
-			let el = e.target,
-					newValue = unmask(el.value),
-					newCursorPosition;
-			
-			if ( newValue.match(ccNumberPattern) ) {
-				newValue = mask(newValue, 4, ccNumberSeparator);
-				
-				newCursorPosition = 
-					ccNumberInputOldCursor - checkSeparator(ccNumberInputOldCursor, 4) + 
-					checkSeparator(ccNumberInputOldCursor + (newValue.length - ccNumberInputOldValue.length), 4) + 
-					(unmask(newValue).length - unmask(ccNumberInputOldValue).length);
-				
-				el.value = (newValue !== "") ? newValue : "";
-			} else {
-				el.value = ccNumberInputOldValue;
-				newCursorPosition = ccNumberInputOldCursor;
-			}
-			
-			el.setSelectionRange(newCursorPosition, newCursorPosition);
+  // Card number spaceing
 
-		};
+  let oldValue,
+  oldCursor,
+  regex = new RegExp(/^\d{0,16}$/g),
+
+  mask = function(value) {
+    let output = [];
+    
+      for(let i = 0; i < value.length; i++) {
+        if(i !== 0 && i % 4 === 0) {
+          output.push(" "); // add the separator
+        }
+        output.push(value[i]);
+      }
+      return output.join("");
+  },
+
+  unmask = function(value) {
+    let output = value.replace(new RegExp(/[^\d]/, 'g'), ''); // Remove every non-digit character
+    return output;
+  },
+
+  checkSeparator = function(position, interval) {
+    return Math.floor(position / (interval + 1));
+  },
+
+  keydownHandler = function(e) {
+    let el = e.target;
+    
+    oldValue = el.value;
+    oldCursor = el.selectionEnd;
+  };
+
+  const inputHandler = function(e) {
+    let el = e.target,
+      newCursorPosition,
+      newValue = unmask(el.value);
+    
+      if(newValue.match(regex)) {
+        newValue = mask(newValue);
+        
+        newCursorPosition = oldCursor - checkSeparator(oldCursor, 4) + checkSeparator(oldCursor + (newValue.length - oldValue.length), 4) + (unmask(newValue).length - unmask(oldValue).length);
+                
+        if(newValue !== "") {
+          el.value = newValue;
+
+        } else {
+          el.value = "";
+        }
+
+      } else {
+        el.value = oldValue;
+        newCursorPosition = oldCursor;
+      }
+
+    el.setSelectionRange(newCursorPosition, newCursorPosition);
+  };
+
 
   return (
     <section className="placeContent">
@@ -174,8 +186,8 @@ export default function PaymentView({
                 min="0000 0000 0000 0000"
                 max="9999 9999 9999 9999"
                 pattern="[0-9 ]{16,19}"
-                onKeyDown={ccNumberInputKeyDownHandler}
-                onInput={ccNumberInputInputHandler}
+                onKeyDown={keydownHandler}
+                onInput={inputHandler}
                 required
               />
               <span className="error" id="err-name" aria-live="assertive">
