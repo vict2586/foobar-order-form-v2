@@ -76,6 +76,8 @@ export default function PaymentView({
 
   let oldValue;
   let oldCursor;
+
+  // Makes a pattern
   let regex = new RegExp(/^\d{0,16}$/g);
 
   // Makes output array + add the separator
@@ -92,7 +94,7 @@ export default function PaymentView({
       return output.join("");
   };
 
-  // Remove every non-digit character
+  // Changes pattern to remove every non-digit character
   let unmask = function(value) {
     let output = value.replace(new RegExp(/[^\d]/, 'g'), '');
 
