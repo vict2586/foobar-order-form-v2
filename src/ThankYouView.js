@@ -8,7 +8,7 @@ export default function ThankYouView({ orderNumber }) {
         margin: "0 auto",
       }}
     >
-      <a href="https://victoriabuhrmann.dk/kea/eksamen_3.sem_v2/build/index.html">
+      <a href="https://victoriabuhrmann.dk/kea/eksamen_3.sem/build/index.html">
         <BackButton text={" to frontpage"}></BackButton>
       </a>
       <section className="placeContent">
@@ -30,7 +30,7 @@ export default function ThankYouView({ orderNumber }) {
         </div>
 
         <div className="placeButton">
-          <a href="https://victoriabuhrmann.dk/kea/eksamen_3.sem_v2/build/index.html">
+          <a href="https://victoriabuhrmann.dk/kea/eksamen_3.sem/build/index.html">
             <button className="orangeButton">Back to frontpage</button>
           </a>
         </div>
