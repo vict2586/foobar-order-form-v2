@@ -80,7 +80,7 @@ export default function Header({ basket, queueLenght }) {
         </p>
       </div>
       <div>
-        <a href="https://victoriabuhrmann.dk/kea/eksamen_3.sem/build/index.html">
+        <a href="https://victoriabuhrmann.dk/kea/eksamen_3.sem/dist/index.html">
           <h1
             style={{
               fontFamily: "Rasa, serif",
