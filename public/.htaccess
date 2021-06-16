@@ -1,4 +1,4 @@
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /kea/frontend/foobar/index.html [L]
+RewriteRule . /kea/eksamen_3.sem_v2/build/index.html [L]

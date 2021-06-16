@@ -108,7 +108,7 @@ function App() {
 
   return (
     <Router
-    // basename="/kea/frontend/foobar"
+     //basename="/kea/eksamen_3.sem_v2/build/index.html"
     >
       <div className="App">
         {/* background styled with wooden texture */}

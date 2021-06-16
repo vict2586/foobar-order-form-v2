@@ -72,13 +72,15 @@ export default function PaymentView({
     console.log(jsonObjectTwo.id);
   }
 
-  // Card number spaceing
+  // -----------Card number spaceing-----------
 
-  let oldValue,
-  oldCursor,
-  regex = new RegExp(/^\d{0,16}$/g),
+  let oldValue;
+  let oldCursor;
+  let regex = new RegExp(/^\d{0,16}$/g);
 
-  mask = function(value) {
+  // Makes output array + add the separator
+  let mask = function(value) {
+    // Make output array
     let output = [];
 
       for(let i = 0; i < value.length; i++) {
@@ -88,28 +90,32 @@ export default function PaymentView({
         output.push(value[i]);
       }
       return output.join("");
-  },
+  };
 
-  unmask = function(value) {
-    let output = value.replace(new RegExp(/[^\d]/, 'g'), ''); // Remove every non-digit character
+  // Remove every non-digit character
+  let unmask = function(value) {
+    let output = value.replace(new RegExp(/[^\d]/, 'g'), '');
+
     return output;
-  },
+  };
 
-  checkSeparator = function(position, interval) {
+  let checkSeparator = function(position, interval) {
     return Math.floor(position / (interval + 1));
-  },
+  };
 
-  keydownHandler = function(e) {
+  // Gets the old values and curser posistion
+  let keydownHandler = function(e) {
     let el = e.target;
     
     oldValue = el.value;
     oldCursor = el.selectionEnd;
   };
 
+  // Makes the new output
   const inputHandler = function(e) {
-    let el = e.target,
-      newCursorPosition,
-      newValue = unmask(el.value);
+    let el = e.target;
+    let newCursorPosition;
+    let newValue = unmask(el.value);
     
       if(newValue.match(regex)) {
         newValue = mask(newValue);
@@ -133,7 +139,7 @@ export default function PaymentView({
     el.setSelectionRange(newCursorPosition, newCursorPosition);
   };
 
-  // Expire date jumbing
+  // -----------Expire date jumbing-----------
 
   const movetoNext = function(e) {
     let el = e.target;
@@ -197,13 +203,13 @@ export default function PaymentView({
                 maxLength="19"
                 min="0000 0000 0000 0000"
                 max="9999 9999 9999 9999"
-                pattern="[0-9 ]{16,19}"
+                pattern="[0-9 ]{19}"
                 onKeyDown={keydownHandler}
                 onInput={inputHandler}
                 required
               />
               <span className="error" id="err-name" aria-live="assertive">
-                Can't be letters and must be 16 numbers
+                Must be 16 numbers
               </span>
             </label>
 
