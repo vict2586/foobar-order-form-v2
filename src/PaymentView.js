@@ -101,6 +101,7 @@ export default function PaymentView({
     return output;
   };
 
+  // If user changes the input once it is typed, it check the spacing
   let checkSeparator = function(position, interval) {
     return Math.floor(position / (interval + 1));
   };
@@ -113,15 +114,17 @@ export default function PaymentView({
     oldCursor = el.selectionEnd;
   };
 
-  // Makes the new output
+  // Gives "mask" the value it needs to make the output
   const inputHandler = function(e) {
     let el = e.target;
     let newCursorPosition;
     let newValue = unmask(el.value);
     
+    // If "newValue" match the first pattern, then give the new value to "mask"
       if(newValue.match(regex)) {
         newValue = mask(newValue);
         
+        // Take the curdor position and changes what need to be changed, and then sends the value to "mask"
         newCursorPosition = oldCursor - checkSeparator(oldCursor, 4) + 
           checkSeparator(oldCursor + (newValue.length - oldValue.length), 4) + 
             (unmask(newValue).length - unmask(oldValue).length);
